@@ -1,0 +1,73 @@
+@keyframes hide-titlePage{
+	0% {opacity: 1;} 100% {opacity: 0;}
+}
+@-webkit-keyframes hide-titlePage{ 
+	0% {opacity: 1;} 100% {opacity: 0;}
+}
+
+@keyframes titleText-upMove{
+	0% {transform: translate(0);} 
+	100% {transform: translate(0,-60%);}
+}
+@-webkit-keyframes titleText-upMove{ 
+	0% {transform: translate(0);} 
+	100% {transform: translate(0,-60%);}
+}
+
+
+html{height: 100%;}
+
+body{
+	height: 100%;
+	margin: 0 0 0 0;
+
+}
+
+#titlePage{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image: url(../img/titleBg.png);
+	background-size: cover;
+	text-align: center;
+}
+	#plane{
+		float: left;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 30%;
+		transform-origin: right center;
+	}
+	#titleText{
+		position: absolute;
+	}
+	.stroke{
+		position: absolute;
+	}
+
+#contentPage{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	float: right;
+	background-image: url(../img/contentBg.png);
+	background-size: cover;
+	text-align: center;
+}
+	#birdDiv{
+	position: relative;
+		top:0;
+		width: 100%;
+		height: 100%;
+	}
+		#bird{
+			position: absolute;
+			left: 0;
+			width: 100%;
+			height: 39.7%;
+		}
+		.card{
+			position: absolute;
+			transform-origin: center top;
+		}
