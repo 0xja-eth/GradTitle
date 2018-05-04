@@ -1,3 +1,30 @@
+/*
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function(callback, element) {
+        var currTime = new Date().getTime();
+        var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+        var id = window.setTimeout(function() {
+            callback(currTime + timeToCall);
+        }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+    };
+}
+if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function(id) {
+        clearTimeout(id);
+    };
+}
+*/
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
 
 TitlePage = {};
 TitlePage.planePos = [[0,411],[6,412],[18,413],[25,414],[32,415],[37,416],[40,417],[43,418],
@@ -13,7 +40,7 @@ TitlePage.planePos = [[0,411],[6,412],[18,413],[25,414],[32,415],[37,416],[40,41
 [240,760],[238,762],[235,766],[232,770],[230,773],[229,775],[227,779],[227,785],
 [228,789],[231,792],[233,794],[240,797],[243,798],[247,799],[252,800],[257,801],
 [262,802],[270,803],[278,804],[288,805],[297,806],[308,807],[319,808],[342,809],
-[403,810],[474,811],[674,811],[747,810],[999,810],[1234,810],[5000,810]];
+[403,810],[474,811],[674,811],[747,810],[999,810],[1334,810],[1440,810]];
 
 TitlePage.title = document.getElementById('titlePage');
 TitlePage.plane = document.createElement('img');
@@ -61,7 +88,8 @@ TitlePage.setup = function(){
 	this.setupPlaneData();
 	this.setupMoveData();
 	this.setupPlaneConfig();
-	requestAnimationFrame(this.update.bind(this));
+	requestAnimFrame(this.update.bind(this));
+	//alert("requestAnimationFrame4");
 }
 TitlePage.setupPosInfo = function(){
 	this.posScale = this.title.offsetWidth/this.pngSize[0];
@@ -115,8 +143,6 @@ TitlePage.setupStrokesPosInfo = function(){
 		data.angle = Math.random()*Math.PI;
 		data.realAngle = 0;
 		data.scale = 1;
-			console.info(this.strokesPic[i]);
-			console.info(data);
 	}
 }
 TitlePage.createStrokes = function(){
@@ -269,10 +295,11 @@ TitlePage.updateStrokeDropData = function(id){
 TitlePage.updateStrokeDropPosition = function(id){
 	var data = this.strokesParams[id];
 	var ele = this.strokes[id];
-	console.info(data);
 	ele.style.opacity = data.opacity;
+	//alert("updateStrokeDropPosition:"+id);
 	ele.style.transform = 'translate('+data.x*100+'%,'+data.y*100+'%)rotate('+
 		data.realAngle+'rad) scale('+data.scale+')';
+	//alert("updateStrokeDropPositionEnd:"+id);
 }
 TitlePage.updateStrokesDrop = function(){
 	for(var i=0;i<this.strokesParams.length;i++){
@@ -281,13 +308,19 @@ TitlePage.updateStrokesDrop = function(){
 	}
 }
 TitlePage.update = function(){
+	//alert("update1");
 	if(!this.active) return;
+	//alert(this.currentPos);
 	this.updateFlyParams();
 	for(var i=0;i<this.planeFrequency;i++) 
 		this.updateFlyPosition();
 	this.updatePosition();
 	if(this.currentPos>=10)this.updateStrokesDrop();
-	requestAnimationFrame(this.update.bind(this));
+	//alert(this.currentPos);
+	requestAnimFrame(this.update.bind(this));
+	//alert("update2");
 }
 
+//alert("TitlePage");
 TitlePage.setup();
+//alert("TitlePage");

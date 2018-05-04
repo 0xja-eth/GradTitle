@@ -29,7 +29,9 @@ body{
 	height: 100%;
 	background-image: url(../img/titleBg.png);
 	background-size: cover;
+	background-position: center;
 	text-align: center;
+	overflow: hidden;
 }
 	#plane{
 		float: left;
@@ -55,6 +57,7 @@ body{
 	float: right;
 	background-image: url(../img/contentBg.png);
 	background-size: cover;
+	background-position: center;
 	text-align: center;
 }
 	#birdDiv{

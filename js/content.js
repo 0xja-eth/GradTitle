@@ -42,7 +42,7 @@ ContentPage.setup = function(text){
 	this.setupBirdData();
 	this.setupMoveData();
 	this.setupCardsData();
-	requestAnimationFrame(this.update.bind(this));
+	requestAnimFrame(this.update.bind(this));
 }
 ContentPage.setupPosInfo = function(){
 	this.birdTop += this.birdOffsetY;
@@ -50,7 +50,6 @@ ContentPage.setupPosInfo = function(){
 		this.cardsPos[i][1] += this.birdOffsetY;
 }
 ContentPage.setupTextData = function(){
-	//this.text.src = 'img/titleText2.png';
 	this.text.style.animationName = 'titleText-upMove';
 	this.text.style.animationDuration = '1s';
 	this.text.style.animationFillMode = 'both';
@@ -144,5 +143,5 @@ ContentPage.update = function(){
 	if(!this.active) return;
 	this.updateBirdAni();
 	this.updateCardsAni();
-	requestAnimationFrame(this.update.bind(this));
+	requestAnimFrame(this.update.bind(this));
 }
