@@ -20,7 +20,20 @@
 
 <!--script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script-->
-
+<script>
+	window.requestAnimFrame = (function(){
+	  return  window.requestAnimationFrame       ||
+	          window.webkitRequestAnimationFrame ||
+	          window.mozRequestAnimationFrame    ||
+	          function( callback ){
+	            window.setTimeout(callback, 1000 / 60);
+	          };
+	})();
+	alert("哈哈哈");
+	if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {  
+	    WebView.setWebContentsDebuggingEnabled(true);  
+	} 
+</script>
 <script src="js/title.js"></script>
 <script src="js/content.js"></script>
 </body>
