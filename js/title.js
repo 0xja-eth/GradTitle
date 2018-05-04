@@ -22,7 +22,7 @@ TitlePage.text = document.createElement('img');
 TitlePage.strokes = [];
 
 TitlePage.pngSize = [751,1334];
-TitlePage.textSize = [117,349];
+TitlePage.textSize = [117,349,462];
 TitlePage.planeSize = [256,130];
 
 TitlePage.textPos = [316,238];
@@ -34,12 +34,16 @@ TitlePage.strokesPic = [
 	'three,70%,15,50%(T,516;L,377).png',
 	'four,50%,-20,30%(T,538;L,400).png',
 	'five,50%,30,45%(T,542;L,357).png',
-	'six,45%,0,10%（T,579;L,382).png'
+	'six,45%,0,10%(T,579;L,382).png'
 ]
 TitlePage.strokesRegExp = /(.+),(\d+)%,(.+),(\d+)%\(T,(\d+);L,(\d+)\)\.png/i;
 TitlePage.strokesPos = [
 [321,238],[353,243],[386,323],
 [334,418],[325,381],[399,308]
+];
+TitlePage.strokesTargetPos = [
+[389,539],[396,580],[378,603],
+[400,626],[357,630],[382,667]
 ];
 TitlePage.strokesSize = [
 [18,56],[14,37],[5,35],
@@ -69,7 +73,8 @@ TitlePage.setupTitleTextPosInfo = function(){
 	var rate = this.textSize[1]/this.textSize[0];
 
 	this.textSize[0] = (this.textSize[0]/this.pngSize[0]);
-	this.textSize[1] = (this.textSize[1]/this.pngSize[1]);//this.textSize[0]*rate;
+	this.textSize[1] = (this.textSize[1]/this.pngSize[1]);
+	this.textSize[2] = (this.textSize[2]/this.pngSize[1]);//this.textSize[0]*rate;
 
 	this.textPos[0] = (this.textPos[0]/this.pngSize[0]);
 	this.textPos[1] = (this.textPos[1]/this.pngSize[1]);
@@ -89,17 +94,29 @@ TitlePage.setupStrokesPosInfo = function(){
 	this.strokesParams = [];
 	for(var i=0;i<this.strokesPic.length;i++){
 		var rate = this.strokesSize[i][1]/this.strokesSize[i][0];
-		this.strokesParams[i] = {};
-		this.strokesParams[i].fx = this.strokesPos[i][0]/this.pngSize[0];
-		this.strokesParams[i].fy = this.strokesPos[i][1]/this.pngSize[1];
-		this.strokesParams[i].fw = this.strokesSize[i][0]/this.pngSize[0];
-		this.strokesParams[i].fh = this.strokesSize[i][1]/this.pngSize[1];
+		var data = this.strokesParams[i] = {};
+		
+		data.fx = this.strokesPos[i][0]/this.pngSize[0];
+		data.fy = this.strokesPos[i][1]/this.pngSize[1];
+		data.fw = this.strokesSize[i][0]/this.pngSize[0];
+		data.fh = this.strokesSize[i][1]/this.pngSize[1];
 
-		this.strokesParams[i].x = 0;//this.strokesParams[i].fx;
-		this.strokesParams[i].y = 0;//this.strokesParams[i].fy;
-		this.strokesParams[i].opacity = 1;
-		this.strokesParams[i].angle = Math.random()*Math.PI;
-		this.strokesParams[i].realAngle = 0;
+		if(this.strokesPic[i].match(this.strokesRegExp)){
+			data.targetScale = Number(RegExp.$2)/100;
+			data.targetAngle = Number(RegExp.$3)/180*Math.PI;
+			data.targetOpacity = Number(RegExp.$4)/100;
+			data.targetX = (this.strokesTargetPos[i][0]-this.strokesPos[i][0])/this.strokesSize[i][0];
+			data.targetY = (this.strokesTargetPos[i][1]-this.strokesPos[i][1])/this.strokesSize[i][1];
+		};
+
+		data.x = 0;//data.fx;
+		data.y = 0;//data.fy;
+		data.opacity = 1;
+		data.angle = Math.random()*Math.PI;
+		data.realAngle = 0;
+		data.scale = 1;
+			console.info(this.strokesPic[i]);
+			console.info(data);
 	}
 }
 TitlePage.createStrokes = function(){
@@ -125,8 +142,18 @@ TitlePage.setupTextData = function(){
 	this.text.style.height = this.textSize[1]*100+'%';
 	document.body.appendChild(this.text);
 }
+TitlePage.setupNewTextData = function(){
+	this.text.src = 'img/titleText2.png'; 
+	this.text.onload = function(){
+		this.text.style.height = this.textSize[2]*100+'%';
+		this.strokes.forEach(function(stroke){
+			stroke.style.display = 'none';
+		})
+	}.bind(this);
+	/**/
+}
 TitlePage.setupPlaneData = function(){
-	this.plane.src = 'img/plane2.png'; 
+	this.plane.src = 'img/plane.png'; 
 	this.plane.id = 'plane';
 	this.title.appendChild(this.plane);
 }
@@ -151,6 +178,7 @@ TitlePage.setupPlaneConfig = function(){
 
 TitlePage.switchContentLayer = function(){
 	this.nextLayer = true;
+	this.setupNewTextData();
 	this.hideTitleLayer();
 	//this.title.removeChild(this.text);
 	ContentPage.setup(this.text);
@@ -193,7 +221,7 @@ TitlePage.updateFlyParams = function(){
 	this.planeAngle += (this.absAngle-this.planeAngle)/6;
 	if(this.planeScale<1.25) this.planeScale += (1.25-0.25)/75;
 	if(this.currentPos >= this.stopPos) this.planeFrequency *= 24/25;
-	else this.planeFrequency += (300-this.planeFrequency)/25;
+	else this.planeFrequency += (300-this.planeFrequency)/33;
 	if(this.planeFrequency<10){
 		if(!this.ry) this.ry = this.y;
 		this.y = this.ry + 5*Math.sin(this.flyCount++/15);
@@ -220,18 +248,31 @@ TitlePage.strokeNeedNextPoint = function(id){
 
 TitlePage.updateStrokeDropData = function(id){
 	var data = this.strokesParams[id];
+	/*
 	data.x += (Math.random()*4-1)/100;
 	data.y += (Math.random()*5)/100;
-	//data.angle += 0.01;//(Math.random()*Math.PI-Math.PI/2);
 	data.realAngle += (data.angle-data.realAngle)/100;
 	data.opacity -= (Math.random()*4-1)/500;
+	*/
+	/*
+	console.info("===========");
+	console.info(data.x);
+	console.info(data.targetX);
+	console.info(data.targetX-data.x);*/
+	var speedRate = 66;
+	data.x += (data.targetX-data.x)/speedRate;
+	data.y += (data.targetY-data.y)/speedRate;
+	data.opacity += (data.targetOpacity-data.opacity)/speedRate;
+	data.realAngle += (data.targetAngle-data.realAngle)/speedRate;
+	data.scale += (data.targetScale-data.scale)/speedRate;
 }
 TitlePage.updateStrokeDropPosition = function(id){
 	var data = this.strokesParams[id];
 	var ele = this.strokes[id];
+	console.info(data);
 	ele.style.opacity = data.opacity;
 	ele.style.transform = 'translate('+data.x*100+'%,'+data.y*100+'%)rotate('+
-		data.realAngle+'rad)';
+		data.realAngle+'rad) scale('+data.scale+')';
 }
 TitlePage.updateStrokesDrop = function(){
 	for(var i=0;i<this.strokesParams.length;i++){

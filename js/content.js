@@ -10,6 +10,7 @@ ContentPage.cards = [];
 
 ContentPage.pngSize = [751,1334];
 ContentPage.birdTop = 408;
+ContentPage.birdOffsetY = -91;
 
 ContentPage.cardsPath = 'img/cards/';
 ContentPage.cardsPic = [
@@ -34,6 +35,7 @@ ContentPage.active = false;
 ContentPage.setup = function(text){
 	this.text = text;
 	this.active = true;
+	this.setupPosInfo();
 	this.createBirdDiv();
 	this.setupBirdInfo();
 	this.setupTextData();
@@ -42,13 +44,18 @@ ContentPage.setup = function(text){
 	this.setupCardsData();
 	requestAnimationFrame(this.update.bind(this));
 }
+ContentPage.setupPosInfo = function(){
+	this.birdTop += this.birdOffsetY;
+	for(var i=0;i<this.cardsPos.length;i++)
+		this.cardsPos[i][1] += this.birdOffsetY;
+}
 ContentPage.setupTextData = function(){
+	//this.text.src = 'img/titleText2.png';
 	this.text.style.animationName = 'titleText-upMove';
 	this.text.style.animationDuration = '1s';
 	this.text.style.animationFillMode = 'both';
 	this.text.style.animationTimingFunction = 'linear';
 	this.text.style.animationIterationCount = '1';
-	//this.content.appendChild(this.text);
 }
 ContentPage.createBirdDiv = function(){
 	this.birdDiv = document.createElement('div');
@@ -75,19 +82,18 @@ ContentPage.setupCardsPosInfo = function(){
 	this.cardsParams = [];
 	for(var i=0;i<this.cardsPic.length;i++){
 		var rate = this.cardsSize[i][0]/this.cardsSize[i][1];
-		this.cardsParams[i] = {};
-		this.cardsParams[i].fx = this.cardsPos[i][0]/this.pngSize[0];
-		this.cardsParams[i].fy = this.cardsPos[i][1]/this.pngSize[1];
-		this.cardsParams[i].fw = this.cardsSize[i][0]/this.pngSize[0];
-		this.cardsParams[i].fh = this.cardsSize[i][1]/this.pngSize[1];
-		//this.cardsParams[i].fw = this.cardsParams[i].fh*rate;
-		//this.cardsParams[i].fh = this.cardsParams[i].fw*rate;
+		var data = this.cardsParams[i] = {};
 
-		this.cardsParams[i].x = 0;//this.strokesParams[i].fx;
-		this.cardsParams[i].y = 0;//this.strokesParams[i].fy;
-		this.cardsParams[i].dir = Math.round(Math.random()*2)==0?-1:1;
-		this.cardsParams[i].angle = this.cardsParams[i].dir*(Math.random()*Math.PI/36+Math.PI/24);
-		this.cardsParams[i].realAngle = 0;
+		data.fx = this.cardsPos[i][0]/this.pngSize[0];
+		data.fy = this.cardsPos[i][1]/this.pngSize[1];
+		data.fw = this.cardsSize[i][0]/this.pngSize[0];
+		data.fh = this.cardsSize[i][1]/this.pngSize[1];
+
+		data.x = 0;//this.strokesParams[i].fx;
+		data.y = 0;//this.strokesParams[i].fy;
+		data.dir = Math.round(Math.random()*2)==0?-1:1;
+		data.angle = data.dir*(Math.random()*Math.PI/36+Math.PI/24);
+		data.realAngle = 0;
 	}
 }
 ContentPage.createCards = function(){

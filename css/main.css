@@ -7,11 +7,11 @@
 
 @keyframes titleText-upMove{
 	0% {transform: translate(0);} 
-	100% {transform: translate(0,-60%);}
+	100% {transform: translate(0,-40%);}
 }
 @-webkit-keyframes titleText-upMove{ 
 	0% {transform: translate(0);} 
-	100% {transform: translate(0,-60%);}
+	100% {transform: translate(0,-40%);}
 }
 
 
@@ -44,7 +44,9 @@ body{
 	}
 	.stroke{
 		position: absolute;
-	}
+		transform-origin: left top;
+	}		
+
 
 #contentPage{
 	position: absolute;
