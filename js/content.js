@@ -29,7 +29,10 @@ ContentPage.cardsSize = [
 [68,258],[75,252],[70,228],
 [75,247],[70,211],[71,189]
 ];
-
+ContentPage.cardsHref = [
+	"fleamarket.html","timecapsule.html","wishforest.html",
+	"gradparty.html","photowall.html","indespeaking.html"
+];
 ContentPage.active = false;
 
 ContentPage.setup = function(text){
@@ -105,7 +108,15 @@ ContentPage.createCards = function(){
 		img.style.left = data.fx*100+'%';
 		img.style.width = data.fw*100+'%';
 		img.style.height = data.fh*100+'%';
+		img.clickHref = ContentPage.cardsHref[i]
+		img.onclick = function(){
+			window.location.href = this.clickHref; 
+		};
+		//img.onclick = "window.location.href = "+ContentPage.cardsHref[i]+";";
+		console.info({o:img});
 		this.birdDiv.appendChild(img);
+		//this.content.appendChild(img);
+
 		this.cards[i] = img;
 	}
 }

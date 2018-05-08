@@ -16,16 +16,6 @@ if (!window.cancelAnimationFrame) {
     };
 }
 */
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame       ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame    ||
-          function( callback ){
-            window.setTimeout(callback, 1000 / 60);
-          };
-})();
-
-
 TitlePage = {};
 TitlePage.planePos = [[0,411],[6,412],[18,413],[25,414],[32,415],[37,416],[40,417],[43,418],
 [48,419],[51,420],[53,421],[57,422],[59,423],[62,424],[65,425],[67,426],
@@ -206,12 +196,12 @@ TitlePage.switchContentLayer = function(){
 	this.nextLayer = true;
 	this.setupNewTextData();
 	this.hideTitleLayer();
-	//this.title.removeChild(this.text);
+	//this.title.pointerEvents = 'none';
 	ContentPage.setup(this.text);
 }
 TitlePage.hideTitleLayer = function(){
 	this.title.style.animationName = 'hide-titlePage';
-	this.title.style.animationDuration = '0.8s';
+	this.title.style.animationDuration = '1s';
 	this.title.style.animationFillMode = 'both';
 	this.title.style.animationTimingFunction = 'linear';
 	this.title.style.animationIterationCount = '1';

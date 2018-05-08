@@ -1,8 +1,12 @@
 @keyframes hide-titlePage{
-	0% {opacity: 1;} 100% {opacity: 0;}
+	0% {opacity: 1;} 
+	80% {opacity: 0;transform:translate(0);}
+	100% {opacity: 0;transform:translate(100%);}
 }
 @-webkit-keyframes hide-titlePage{ 
-	0% {opacity: 1;} 100% {opacity: 0;}
+	0% {opacity: 1;} 
+	80% {opacity: 0;transform:translate(0);}
+	100% {opacity: 0;transform:translate(100%);}
 }
 
 @keyframes titleText-upMove{
@@ -61,7 +65,7 @@ body{
 	text-align: center;
 }
 	#birdDiv{
-	position: relative;
+		position: relative;
 		top:0;
 		width: 100%;
 		height: 100%;
@@ -71,6 +75,7 @@ body{
 			left: 0;
 			width: 100%;
 			height: 39.7%;
+			pointer-events:none;
 		}
 		.card{
 			position: absolute;
