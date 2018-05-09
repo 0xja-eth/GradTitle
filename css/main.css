@@ -1,12 +1,12 @@
 @keyframes hide-titlePage{
 	0% {opacity: 1;} 
-	80% {opacity: 0;transform:translate(0);}
-	100% {opacity: 0;transform:translate(100%);}
+	80% {opacity: 0;width:100%;}
+	100% {opacity: 0;width:0;}
 }
 @-webkit-keyframes hide-titlePage{ 
 	0% {opacity: 1;} 
-	80% {opacity: 0;transform:translate(0);}
-	100% {opacity: 0;transform:translate(100%);}
+	80% {opacity: 0;width:100%;}
+	100% {opacity: 0;width:0;}
 }
 
 @keyframes titleText-upMove{
