@@ -12,11 +12,12 @@
 <link rel="prefetch" href="img/birdPic.png" />
 </head>
 
-<body>
+<body onload="preLoad()">
 <div id="contentPage">
 </div>
 <div id="titlePage">
 </div>
+<div id="loading">Loading...</div>
 
 <!--script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script-->
@@ -32,7 +33,22 @@
 	if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.KITKAT) {  
 	    WebView.setWebContentsDebuggingEnabled(true);  
 	} 
+
+	function getQueryString(name) { 
+		var reg = new RegExp(name+"=([^ ]+)", "g"); 
+		var text = window.location.search.replace("%20"," ");
+		var r = text.substr(1).match(reg); 
+		if (r) return RegExp.$1; return null; 
+	} 
 </script>
+<script src="js/lib/preloadjs-NEXT.min.js"></script>
 <script src="js/title.js"></script>
 <script src="js/content.js"></script>
+<script>
+	function preLoad(){
+		TitlePage.preLoad();/*else{
+    		TitlePage.preload.on("complete", TitlePage.setup.bind(TitlePage));
+		}*/
+	}
+</script>
 </body>

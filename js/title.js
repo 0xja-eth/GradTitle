@@ -33,6 +33,7 @@ TitlePage.planePos = [[0,411],[6,412],[18,413],[25,414],[32,415],[37,416],[40,41
 [403,810],[474,811],[674,811],[747,810],[999,810],[1334,810],[1440,810]];
 
 TitlePage.title = document.getElementById('titlePage');
+TitlePage.loading = document.getElementById('loading');
 TitlePage.plane = document.createElement('img');
 TitlePage.text = document.createElement('img');
 
@@ -44,16 +45,16 @@ TitlePage.planeSize = [256,130];
 
 TitlePage.textPos = [316,238];
 
-TitlePage.strokesPath = 'img/strokes/';
+TitlePage.strokesPath = 'strokes/';
 TitlePage.strokesPic = [
-	'one,70%,0,80%(T,450;L,390).png',
-	'two,80%,30,70%(T,490;L,396).png',
-	'three,70%,15,50%(T,516;L,377).png',
-	'four,50%,-20,30%(T,538;L,400).png',
-	'five,50%,30,45%(T,542;L,357).png',
-	'six,45%,0,10%(T,579;L,382).png'
+	'one,70,0,80(T,450;L,390).png',
+	'two,80,30,70(T,490;L,396).png',
+	'three,70,15,50(T,516;L,377).png',
+	'four,50,-20,30(T,538;L,400).png',
+	'five,50,30,45(T,542;L,357).png',
+	'six,45,0,10(T,579;L,382).png'
 ]
-TitlePage.strokesRegExp = /(.+),(\d+)%,(.+),(\d+)%\(T,(\d+);L,(\d+)\)\.png/i;
+TitlePage.strokesRegExp = /(.+),(\d+),(.+),(\d+)\(T,(\d+);L,(\d+)\)\.png/i;
 TitlePage.strokesPos = [
 [321,238],[353,243],[386,323],
 [334,418],[325,381],[399,308]
@@ -67,10 +68,24 @@ TitlePage.strokesSize = [
 [22,82],[41,41],[21,73]
 ];
 
+TitlePage.loadManifest = TitlePage.strokesPic.map(
+	function(pic){return TitlePage.strokesPath + pic;}
+	).concat(["titleText.png","titleBg.png","contentBg.png","plane.png"]);
 
 TitlePage.active = false;
 
+TitlePage.preLoad = function(){
+	this.preload = new createjs.LoadQueue(false, "img/");
+	this.preload.loadManifest(this.loadManifest);
+    this.preload.on("complete", this.setup.bind(this));
+
+	this.realtimeLoad = new createjs.LoadQueue(false, "img/");
+	this.realtimeLoad.loadManifest(ContentPage.loadManifest);
+	this.realtimeLoad.load();
+}
 TitlePage.setup = function(){
+	this.hideLoading();
+
 	this.active = true;
 	this.setupPosInfo();
 	this.createStrokes();
@@ -79,7 +94,18 @@ TitlePage.setup = function(){
 	this.setupMoveData();
 	this.setupPlaneConfig();
 	requestAnimFrame(this.update.bind(this));
-	//alert("requestAnimationFrame4");
+	
+	if(getQueryString('page')=='content'){ 
+		this.title.removeChild(this.plane);
+		this.switchContentLayer();
+	}
+}
+TitlePage.hideLoading = function(){
+	this.loading.style.animationName = 'hide-titlePage';
+	this.loading.style.animationDuration = '0.5s';
+	this.loading.style.animationFillMode = 'both';
+	this.loading.style.animationTimingFunction = 'linear';
+	this.loading.style.animationIterationCount = '1';
 }
 TitlePage.setupPosInfo = function(){
 	this.posScale = this.title.offsetWidth/this.pngSize[0];
@@ -139,7 +165,7 @@ TitlePage.createStrokes = function(){
 	for(var i=0;i<this.strokesParams.length;i++){
 		var data = this.strokesParams[i];
 		var img = document.createElement('img');
-		img.src = this.strokesPath+this.strokesPic[i];
+		img.src = 'img/'+this.strokesPath+this.strokesPic[i];
 		img.className = 'stroke';
 		img.style.top = data.fy*100+'%';
 		img.style.left = data.fx*100+'%';
@@ -197,7 +223,7 @@ TitlePage.switchContentLayer = function(){
 	this.setupNewTextData();
 	this.hideTitleLayer();
 	//this.title.pointerEvents = 'none';
-	ContentPage.setup(this.text);
+	ContentPage.preLoad(this.text);
 }
 TitlePage.hideTitleLayer = function(){
 	this.title.style.animationName = 'hide-titlePage';
@@ -298,19 +324,21 @@ TitlePage.updateStrokesDrop = function(){
 	}
 }
 TitlePage.update = function(){
-	//alert("update1");
 	if(!this.active) return;
-	//alert(this.currentPos);
 	this.updateFlyParams();
 	for(var i=0;i<this.planeFrequency;i++) 
 		this.updateFlyPosition();
 	this.updatePosition();
 	if(this.currentPos>=10)this.updateStrokesDrop();
-	//alert(this.currentPos);
 	requestAnimFrame(this.update.bind(this));
-	//alert("update2");
 }
 
-//alert("TitlePage");
-TitlePage.setup();
-//alert("TitlePage");
+function getQueryString(name) { 
+	var reg = new RegExp(name+"=([^ ]+)", "g"); 
+	var text = window.location.search.replace("%20"," ");
+	var r = text.substr(1).match(reg); 
+	if (r) return RegExp.$1; return null; 
+} 
+function htmlEncodeJQ( str ) {  
+    return $('<span/>').text( str ).html();  
+}  

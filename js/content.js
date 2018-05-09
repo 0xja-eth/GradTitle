@@ -4,6 +4,7 @@ ContentPage = {};
 
 
 ContentPage.content = document.getElementById('contentPage');
+ContentPage.loading = document.getElementById('loading');
 ContentPage.bird = document.createElement('img');
 
 ContentPage.cards = [];
@@ -12,7 +13,7 @@ ContentPage.pngSize = [751,1334];
 ContentPage.birdTop = 408;
 ContentPage.birdOffsetY = -91;
 
-ContentPage.cardsPath = 'img/cards/';
+ContentPage.cardsPath = 'cards/';
 ContentPage.cardsPic = [
 	'activity one(T,578;L,108).png',
 	'activity two(T,506;L,202).png',
@@ -33,8 +34,17 @@ ContentPage.cardsHref = [
 	"fleamarket.html","timecapsule.html","wishforest.html",
 	"gradparty.html","photowall.html","indespeaking.html"
 ];
+ContentPage.loadManifest = ContentPage.cardsPic.map(
+	function(pic){return ContentPage.cardsPath + pic;}
+	).concat(["titleText2.png","contentBg.png","birdPic.png"]);
+
 ContentPage.active = false;
 
+ContentPage.preLoad = function(text){
+	this.preload = new createjs.LoadQueue(false, "img/");
+	this.preload.loadManifest(this.loadManifest);
+    this.preload.on("complete", this.setup.bind(this,text));
+}
 ContentPage.setup = function(text){
 	this.text = text;
 	this.active = true;
@@ -102,7 +112,7 @@ ContentPage.createCards = function(){
 	for(var i=0;i<this.cardsParams.length;i++){
 		var data = this.cardsParams[i];
 		var img = document.createElement('img');
-		img.src = this.cardsPath+this.cardsPic[i];
+		img.src = 'img/'+this.cardsPath+this.cardsPic[i];
 		img.className = 'card';
 		img.style.top = data.fy*100+'%';
 		img.style.left = data.fx*100+'%';
@@ -112,10 +122,7 @@ ContentPage.createCards = function(){
 		img.onclick = function(){
 			window.location.href = this.clickHref; 
 		};
-		//img.onclick = "window.location.href = "+ContentPage.cardsHref[i]+";";
-		console.info({o:img});
 		this.birdDiv.appendChild(img);
-		//this.content.appendChild(img);
 
 		this.cards[i] = img;
 	}

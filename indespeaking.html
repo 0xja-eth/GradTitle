@@ -6,6 +6,9 @@
 <title>毕业季</title>
 <link href="css/main.css" rel="stylesheet" type="text/css">
 <style>
+	body{
+		min-height: 600px;
+	}
 	#background{
 		height: 100%;
 		background-image: url(img/indespeaking/background.png);
@@ -22,7 +25,9 @@
 			position: fixed;
 			right:3.9%;
 			bottom: 4.3%;
-			width: 27.9%;
+			/*width: 27.9%;*/
+			height: 12.8%;
+			min-height: 80px;
 		}
 		#head{
 			margin-top: 7.2%;
@@ -42,7 +47,7 @@
 
 <body>
 <div id="background">
-	<img id="back" src="img/back(T,44;R,0).png" onclick="window.location.href='index.html';">
+	<img id="back" src="img/back(T,44;R,0).png" onclick="window.location.href='index.html?page=content';">
 	<img id="click" src="img/indespeaking/enter(B,58;R,29).png" onclick="alert('Clicked2');">
 	<img id="head" src="img/indespeaking/head(T,96;L,75).png">
 	<div id="text-content">

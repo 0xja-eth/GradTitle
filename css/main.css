@@ -69,6 +69,7 @@ body{
 		top:0;
 		width: 100%;
 		height: 100%;
+		max-height: 750px;
 	}
 		#bird{
 			position: absolute;
@@ -81,3 +82,16 @@ body{
 			position: absolute;
 			transform-origin: center top;
 		}
+
+#loading{
+	position: fixed;
+	left: 0; top: 0;
+	width: 100%;
+	height: 100%;
+	color: rgba(150,150,150);
+	background-color: rgba(221,232,242,0.75);
+	text-align: center;
+	padding-top: 50%;
+	font-size: 32px;
+	line-height: 50%;
+}
