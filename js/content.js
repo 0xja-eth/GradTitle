@@ -15,12 +15,17 @@ ContentPage.birdOffsetY = -91;
 
 ContentPage.cardsPath = 'cards/';
 ContentPage.cardsPic = [
-	'activity one(T,578;L,108).png',
-	'activity two(T,506;L,202).png',
+	'one.png',
+	'two.png',
+	'three.png',
+	'four.png',
+	'five.png',
+	'six.png',
+/*	'activity two(T,506;L,202).png',
 	'activity three(T,519;L,292).png',
 	'activity four(T,514;L,595).png',
 	'activity five(T,495;L,500).png',
-	'activity six(T,471;L,585).png'
+	'activity six(T,471;L,585).png'*/
 ]
 ContentPage.cardsPos = [
 [108,658],[202,684],[292,697],
