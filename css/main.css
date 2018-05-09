@@ -45,6 +45,14 @@ body{
 		width: 30%;
 		transform-origin: right center;
 	}
+	#route{
+		position: absolute;
+		/*top: 30.5%;*/
+		top: 0;
+		left: 0;
+		width: 100%;
+		/*height: 30.6%;*/
+	}
 	#titleText{
 		position: absolute;
 	}

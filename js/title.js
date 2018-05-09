@@ -34,6 +34,7 @@ TitlePage.planePos = [[0,411],[6,412],[18,413],[25,414],[32,415],[37,416],[40,41
 
 TitlePage.title = document.getElementById('titlePage');
 TitlePage.loading = document.getElementById('loading');
+//TitlePage.route = document.createElement('img');
 TitlePage.plane = document.createElement('img');
 TitlePage.text = document.createElement('img');
 
@@ -94,7 +95,7 @@ TitlePage.setup = function(){
 	this.setupMoveData();
 	this.setupPlaneConfig();
 	requestAnimFrame(this.update.bind(this));
-	
+
 	if(getQueryString('page')=='content'){ 
 		this.title.removeChild(this.plane);
 		this.switchContentLayer();
@@ -181,13 +182,13 @@ TitlePage.setupTextData = function(){
 	this.text.style.top = this.textPos[1]*100+'%';
 	this.text.style.left = this.textPos[0]*100+'%';
 	this.text.style.width = this.textSize[0]*100+'%';
-	this.text.style.height = this.textSize[1]*100+'%';
+	//this.text.style.height = this.textSize[1]*100+'%';
 	document.body.appendChild(this.text);
 }
 TitlePage.setupNewTextData = function(){
 	this.text.src = 'img/titleText2.png'; 
 	this.text.onload = function(){
-		this.text.style.height = this.textSize[2]*100+'%';
+		//this.text.style.height = this.textSize[2]*100+'%';
 		this.strokes.forEach(function(stroke){
 			stroke.style.display = 'none';
 		})
@@ -197,12 +198,21 @@ TitlePage.setupNewTextData = function(){
 TitlePage.setupPlaneData = function(){
 	this.plane.src = 'img/plane.png'; 
 	this.plane.id = 'plane';
+	//this.route.src = 'img/route.bak.png'; 
+	//this.route.id = 'route';
+/*
+	this.route.style.top = this.planePos[0][1]+'px';
+	this.route.style.width = '100%';
+	this.route.style.height = this.planePos[this.planePos.length-1][1]-
+		this.planePos[0][1]+'px';
+*/
+	//this.title.appendChild(this.route);
 	this.title.appendChild(this.plane);
 }
 TitlePage.setupMoveData = function(){
 	this.flyCount = 0;
-	this.planeSpeed = 0.02;
-	this.planeFrequency = 10;
+	this.planeSpeed = 0.001;
+	this.planeFrequency = 200;
 	this.stopPos = 90;
 
 	this.currentPos = 0;
@@ -263,8 +273,8 @@ TitlePage.updateFlyParams = function(){
 	this.planeAngle += (this.absAngle-this.planeAngle)/6;
 	if(this.planeScale<1.25) this.planeScale += (1.25-0.25)/75;
 	if(this.currentPos >= this.stopPos) this.planeFrequency *= 24/25;
-	else this.planeFrequency += (300-this.planeFrequency)/33;
-	if(this.planeFrequency<10){
+	else this.planeFrequency += (6000-this.planeFrequency)/33;
+	if(this.planeFrequency<200){
 		if(!this.ry) this.ry = this.y;
 		this.y = this.ry + 5*Math.sin(this.flyCount++/15);
 	}
@@ -290,17 +300,6 @@ TitlePage.strokeNeedNextPoint = function(id){
 
 TitlePage.updateStrokeDropData = function(id){
 	var data = this.strokesParams[id];
-	/*
-	data.x += (Math.random()*4-1)/100;
-	data.y += (Math.random()*5)/100;
-	data.realAngle += (data.angle-data.realAngle)/100;
-	data.opacity -= (Math.random()*4-1)/500;
-	*/
-	/*
-	console.info("===========");
-	console.info(data.x);
-	console.info(data.targetX);
-	console.info(data.targetX-data.x);*/
 	var speedRate = 66;
 	data.x += (data.targetX-data.x)/speedRate;
 	data.y += (data.targetY-data.y)/speedRate;
@@ -312,10 +311,8 @@ TitlePage.updateStrokeDropPosition = function(id){
 	var data = this.strokesParams[id];
 	var ele = this.strokes[id];
 	ele.style.opacity = data.opacity;
-	//alert("updateStrokeDropPosition:"+id);
 	ele.style.transform = 'translate('+data.x*100+'%,'+data.y*100+'%)rotate('+
 		data.realAngle+'rad) scale('+data.scale+')';
-	//alert("updateStrokeDropPositionEnd:"+id);
 }
 TitlePage.updateStrokesDrop = function(){
 	for(var i=0;i<this.strokesParams.length;i++){
