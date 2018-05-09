@@ -71,7 +71,7 @@ TitlePage.strokesSize = [
 
 TitlePage.loadManifest = TitlePage.strokesPic.map(
 	function(pic){return TitlePage.strokesPath + pic;}
-	).concat(["titleText.png","titleBg.png","contentBg.png","plane.png"]);
+	).concat(["titleText.png","titleText2.png","titleBg.png","contentBg.png","plane.png"]);
 
 TitlePage.active = false;
 
@@ -182,17 +182,17 @@ TitlePage.setupTextData = function(){
 	this.text.style.top = this.textPos[1]*100+'%';
 	this.text.style.left = this.textPos[0]*100+'%';
 	this.text.style.width = this.textSize[0]*100+'%';
-	//this.text.style.height = this.textSize[1]*100+'%';
+	this.text.style.height = this.textSize[1]*100+'%';
 	document.body.appendChild(this.text);
 }
 TitlePage.setupNewTextData = function(){
 	this.text.src = 'img/titleText2.png'; 
-	this.text.onload = function(){
-		//this.text.style.height = this.textSize[2]*100+'%';
+	//this.text.onload = function(){
+	this.text.style.height = this.textSize[2]*100+'%';
 		this.strokes.forEach(function(stroke){
 			stroke.style.display = 'none';
 		})
-	}.bind(this);
+	//}.bind(this);
 	/**/
 }
 TitlePage.setupPlaneData = function(){
