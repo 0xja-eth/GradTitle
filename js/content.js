@@ -28,12 +28,12 @@ ContentPage.cardsPic = [
 	'activity six(T,471;L,585).png'*/
 ]
 ContentPage.cardsPos = [
-[108,658],[202,684],[300,698],
+[108,656],[202,684],[300,697],
 [395,689],[500,673],[585,648]
 ];
 ContentPage.cardsSize = [
-[68,258],[75,252],[66,249],
-[75,247],[70,211],[71,189]
+[57,245],[65,257],[65,248],
+[60,242],[62,206],[60,180]
 ];
 ContentPage.cardsHref = [
 	"fleamarket.html","timecapsule.html","wishforest.html",
